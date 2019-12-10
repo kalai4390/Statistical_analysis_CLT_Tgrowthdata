@@ -1,0 +1,144 @@
+---
+title: "Statistical_inference_CLT"
+author: "kalai"
+date: "12/9/2019"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+
+
+## Overview
+
+This document visits the exponential distribution in R and compares its distribution with the Central Limit Theorem. rexp(n,lambda) is used to simulate the exponential distribution in R, lambda denoting the rate parameter. The mean and standard deviation of exponential distribution is 1/lambda. lambda=0.2 is assumed for all simulations. The distributions of averages of 40 exponentials are analyzed. 
+
+The objectives of this document would be to
+
+1. Show the sample mean and compare it to the theoretical mean of the distribution.
+2. Show how variable the sample is and compare it to the theoretical variance of the distribution.
+3. Show that the distribution is approximately normal.
+
+Loading the required libraries
+
+
+
+```{r}
+library(knitr)
+library(data.table)
+library(ggplot2)
+```
+
+Initializing the variables as defined in the problem statement.
+
+```{r}
+n <- 40 # sample size
+lambda <- 0.2 # lambda for rexp
+ns <- 1000 # number of simulations
+quantile <- 1.96 # 95th % quantile for Confidence Interval
+set.seed(500) # set the seed value for reproducibility
+```
+
+Create a matrix with 1000 simulations for 40 samples in the exponential distribution.
+
+```{r}
+Simulation <- matrix(rexp(n * ns, rate = lambda), ns)
+```
+
+Calculate the averages across the 40 values for each of the 1000 simulations
+
+
+```{r}
+Means <- rowMeans(Simulation)
+```
+
+## Comparison of sample and theoritical means of the distribution
+
+### Sample mean
+
+```{r}
+sample_mean <- mean(Means) # Mean of sample means
+sample_mean
+```
+
+### Theoretical Mean
+
+```{r}
+t_mean <- 1 / lambda # Theoretical Mean
+t_mean
+```
+
+The mean of sample mean is 5.010562 and the theoretical mean is 5. It can be seen that the means are close to each other.
+
+## Comparison of sample and theoretical variance
+
+### Sample variance
+
+```{r}
+sample_Var <- var(Means)
+sample_Var
+```
+
+### Theoretical Variance
+
+```{r}
+theoritical_Var  <- (1 / lambda)^2 / (n) 
+theoritical_Var
+```
+
+The theoretical variance is 0.625 and the variance in the sample is 0.6003934
+
+## Show that distribution is normal
+
+```{r}
+plotdata <- data.frame(Means)
+g <- ggplot(plotdata, aes(x =Means))
+g <- g + geom_histogram(aes(y=..density..), colour="green",
+                        fill = "yellow")
+g <- g + labs(title = "Distribution of averages of Samples", x = "Mean of Samples", y = "density")
+
+g
+
+```
+
+## Comparison of standard deviation
+
+### Sample standard deviation computation
+```{r}
+SD <- sd(Means)
+SD
+```
+
+### Theoretical standard deviation computation
+```{r}
+t_SD <- 1/(lambda * sqrt(n))
+t_SD
+```
+
+The standard deviation for sample means is 0.7748506 and theoritical means is 0.7905694. Again they are too close
+
+## To show that the distribution is approximately normal
+
+The confidence interval is compared to prove that the distribution is indeed normal. If the difference is small, then we can conclude that the distribution tends to be normal.
+
+### computation of sample Confidence Interval
+
+```{r}
+SCI <- round (mean(Means) + c(-1,1)*1.96*sd(Means)/sqrt(n),3)
+SCI
+```
+
+### computation of theoretical Confidence Interval
+
+```{r}
+TCI <- t_mean + c(-1,1) * 1.96 * sqrt(theoritical_Var)/sqrt(n)
+TCI
+```
+
+The thoeretical confidence interval is 4.755 5.245 and the confidence interval for sample means is 4.770 5.251
+
+They are very close,proving that the distribution tends to be normal with large sample size. 
+
+## Conclusion
+
+The distribution adheres to the Central Limit Theorem

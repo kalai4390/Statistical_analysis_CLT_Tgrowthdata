@@ -1,0 +1,100 @@
+---
+title: "Tooth_growth_analysis"
+author: "kalai"
+date: "12/9/2019"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+## Overview
+
+The tooth growth dataset is explored in this document. The data consists of the increase in length of odontoblasts (cells responsible for tooth growth) in 60 guinea pigs. Each pig was administered a set dosage od vitamin C by one of the delivery methods.
+
+The dosage for vitamin C was set at 0.5, 1, and 2 mg/day
+
+The delivery methods were through orange juice, or ascorbic acid.
+
+The  data frame consists of 60 observations with 3 variables
+
+The following tasks are to be performed
+
+1. Load the ToothGrowth data and perform some basic exploratory data analyses
+2.Provide a basic summary of the data.
+3. Use confidence intervals and/or hypothesis tests to compare tooth growth by supp and dose. 
+4. State the conclusions and the assumptions needed for arriving at the conclusions
+  
+#### Loading the packages 
+
+```{r}
+library(datasets)
+library(ggplot2)
+```
+### Loading the data
+
+```{r}
+data("ToothGrowth")
+head(ToothGrowth)
+dim(ToothGrowth)
+```
+
+
+### Summary of the data
+
+```{r}
+summary(ToothGrowth)
+```
+
+### Exploratory data analysis on the ToothGrowth data
+
+A Comparison between supplement delivery methods and their impact on tooth length
+
+```{r}
+ggplot(aes(x = supp, y = len), data = ToothGrowth) + geom_boxplot(aes(fill = supp))
+```
+
+    
+Comparison of Vitamin C dose levels and their impact on tooth length
+
+```{r}
+ggplot(aes(x = factor(dose), y = len), data = ToothGrowth) + geom_boxplot(aes(fill = factor(dose)))
+```
+
+### Usage of confidence intervals to compare the Tooth growth by supp and dosage
+
+There are three dosages administered to the guinea pigs. They are 0.5, 1 and 2 mg.
+
+
+###Let's conduct a t-test for 0.5 mg 
+
+```{r}
+t.test(len ~ supp, ToothGrowth[ToothGrowth$dose == .5, ])
+```
+
+### t-test for 1 mg dosage
+
+```{r}
+t.test(len ~ supp, ToothGrowth[ToothGrowth$dose == 1, ])
+```
+
+### t-test for 2 mg dosage
+
+```{r}
+t.test(len ~ supp, ToothGrowth[ToothGrowth$dose == 2, ])
+```
+
+## Conclusion
+
+For the t-test to be succesful it is assumed that the data is paired. The mean tooth length for orange juice is 20.66 and 16.96 for ascorbic acid vitamin. From this, we can infer that orange juice is more effective in increasing tooth length.
+
+The impact on the amount of dosage can be interpreted as follows
+
+1. For 0.5 mg dosage, orange juice has a higher mean of 13.23 whereas Vitamin has a mean tooth length of 7.98
+
+2. For 1 mg dosage, orange juice has a mean of 22.70 whereas Vitamin has a mean tooth length of 16.77
+
+3. For 2 mg dosage, orange juice has a mean of 26.06 whereas Vitamin has a mean tooth length of 26.14
+
+There is no significant difference in the mean tooth length when the dosage is 2 mg. 
+
+Overall it can be concluded that higher dosage results in greater increase of tooth length in guinea pigs irrespective of the method of supplement.
