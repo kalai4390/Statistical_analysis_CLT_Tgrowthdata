@@ -2,8 +2,8 @@
 
 The analysis performed in this repo, can be divided into two components.
 
-## Use the exponential distribution in R and compare its distribution with the Central Limit Theorem
-## Explore the toothGrowth dataset and provide statistical inference on the effect of dosage administration type and quantity of dosage for rate of increase in length of odontoblasts (cells responsible for tooth growth) in 60 guinea pigs
+## A. Use the exponential distribution in R and compare its distribution with the Central Limit Theorem
+## B. Explore the toothGrowth dataset and provide statistical inference on the effect of dosage administration type and quantity of dosage for rate of increase in length of odontoblasts (cells responsible for tooth growth) in 60 guinea pigs
 
 #### 1. The first part visits the exponential distribution in R and compares its distribution with the Central Limit Theorem. rexp(n,lambda) is used to simulate the exponential distribution in R, lambda denoting the rate parameter.
 
